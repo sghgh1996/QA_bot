@@ -23,7 +23,7 @@ class BotManController extends Controller
         });
 
         $botman->hears('/ask', function (BotMan $bot) {
-            $bot->startConversation(new QAConversation());
+            $bot->startConversation(new QAConversation($bot));
         });
 
         $botman->hears('/cancel', function (BotMan $bot) {

@@ -2,18 +2,24 @@
 
 namespace App\Conversations;
 
-
+use App\QAProcessing\QAnswering;
 use Mpociot\BotMan\Answer;
+use Mpociot\BotMan\BotMan;
 use Mpociot\BotMan\Button;
 use Mpociot\BotMan\Conversation;
 use Mpociot\BotMan\Question;
 
 class QAConversation extends Conversation{
 
+    protected $bot;
     protected $question;
     protected $choiceNum;
     protected $choices = array();
 
+    public function __construct(BotMan $bot){
+        $this->bot = $bot;
+    }
+    
     /**
      * Ask Question
      */
@@ -81,7 +87,16 @@ class QAConversation extends Conversation{
     }
 
     private function giveAnswer(){
+        $process = new QAnswering();
+        try{
+            $reply = $process->answerToQuestion($this->question, $this->choices);
+            $this->bot->typesAndWaits(3);
+            $this->say('جواب سوال به احتمال زیاد  '.'"'.$reply.'"'.'  است');
+            $this->say('اگه دوباره خواستی سوال بپرسی روی /ask بزن.');
 
+        } catch (\Exception $e){
+            $this->say('مشکلی رخ داده است. اگه دوباره خواستی سوال بپرسی روی /ask بزن.');
+        }
     }
     /**
      * @return mixed
