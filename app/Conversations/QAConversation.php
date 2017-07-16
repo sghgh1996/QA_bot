@@ -61,13 +61,26 @@ class QAConversation extends Conversation{
      * @param $number
      */
     private function askChoices(){
-        $number = $this->choiceNum;
-        for($i = 1; $i <= $number; $i++){
-            $this->ask('گزینه شماره ', function (Answer $response) {
-                array_push($this->choices,$response->getText());
-            });
+        $this->askChoice(1);
+    }
+
+    /**
+     * @param $number
+     */
+    private function askChoice($number){
+        if($number > $this->choiceNum){
+            $this->say('خب. حالا منتظر باش تا جوابتو بدم');
+            $this->giveAnswer();
+            return;
         }
-        $this->say('خب. حالا منتظر باش تا جوابتو بدم');
+
+        $this->ask('گزینه شماره '.$number .' را وارد کن', function (Answer $response) use ($number) {
+            array_push($this->choices,$response->getText());
+            $this->askChoice($number+1);
+        });
+    }
+
+    private function giveAnswer(){
 
     }
     /**
