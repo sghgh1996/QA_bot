@@ -14,6 +14,7 @@ class BotManController extends Controller
 	 */
     public function handle(Request $request)
     {
+        file_put_contents('log.txt', $request);
         $botman = app('botman');
         $botman->verifyServices(env('TOKEN_VERIFY'));
 
