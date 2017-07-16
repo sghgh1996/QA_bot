@@ -178,6 +178,8 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+//        google search api
+        'JanDrda\LaravelGoogleCustomSearchEngine\LaravelGoogleCustomSearchEngineProvider'
     ],
 
     /*
@@ -228,6 +230,8 @@ return [
 
         'BotMan' => Mpociot\BotMan\Facades\BotMan::class,
 
+//        google search api
+        'GoogleCseSearch' => 'JanDrda\LaravelGoogleCustomSearchEngine\Facades\LaravelGoogleCustomSearchEngineProvider',
     ],
 
 ];
