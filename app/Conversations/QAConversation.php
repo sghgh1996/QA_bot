@@ -90,10 +90,15 @@ class QAConversation extends Conversation{
         $process = new QAnswering();
         try{
             $reply = $process->answerToQuestion($this->question, $this->choices);
-            $this->bot->typesAndWaits(3);
-            $this->say('جواب سوال به احتمال زیاد  '.'"'.$reply.'"'.'  است');
-            $this->say('اگه دوباره خواستی سوال بپرسی روی /ask بزن.');
-
+            if($reply != null) {
+                $this->bot->typesAndWaits(2);
+                $this->say('جواب سوال به احتمال زیاد  ' . '"' . $reply . '"' . '  است');
+                $this->say('اگه دوباره خواستی سوال بپرسی روی /ask بزن.');
+            } else {
+                $this->bot->typesAndWaits(2);
+                $this->say('متاسفم نمیتونم به این سوال پاسخ بدم.');
+                $this->say('اگه دوباره خواستی سوال بپرسی روی /ask بزن.');
+            }
         } catch (\Exception $e){
             $this->say('مشکلی رخ داده است. اگه دوباره خواستی سوال بپرسی روی /ask بزن.');
         }
