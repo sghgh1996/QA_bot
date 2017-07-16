@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Conversations\ExampleConversation;
+use App\Conversations\QAConversation;
 use Illuminate\Http\Request;
 use Mpociot\BotMan\BotMan;
 
@@ -13,18 +14,26 @@ class BotManController extends Controller
 	 */
     public function handle(Request $request)
     {
-        file_put_contents('log.txt', $request);
         $botman = app('botman');
         $botman->verifyServices(env('TOKEN_VERIFY'));
 
-        // Simple respond method
-        $botman->hears('Hello', function (BotMan $bot) {
-            $bot->reply('Hi there :)');
+
+        $botman->hears('/start', function (BotMan $bot) {
+            $bot->reply('برای پرسیدن سوال روی /ask کلیک کن.');
+        });
+
+        $botman->hears('/ask', function (BotMan $bot) {
+            $bot->startConversation(new QAConversation());
+        });
+
+        $botman->hears('/cancel', function (BotMan $bot) {
+            $bot->reply('برای پرسیدن سوال روی /ask کلیک کن.');
         });
 
         $botman->fallback(function($bot) {
-            $bot->reply('متاسفم پیام شما غیر قابل فهم است. میتوانید از لیست زیر برای ارسال پیام استفاده کنید.
-            ');
+            $bot->typesAndWaits(1);
+            $txt = ("متاسفم پیام شما غیر قابل فهم است. برای پرسیدن سوال روی  /ask  کلیک کنید.");
+            $bot->reply($txt);
         });
 
         $botman->listen();
