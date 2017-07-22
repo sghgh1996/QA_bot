@@ -24,7 +24,8 @@ class BotManController extends Controller
         });
 
         $botman->hears('/ask', function (BotMan $bot) {
-            $bot->startConversation(new QAConversation($bot));
+            $bot->reply('سیستم در حال تکمیل شدن است. بعدا امتحان کنید');
+//            $bot->startConversation(new QAConversation($bot));
         });
 
         $botman->hears('/cancel', function (BotMan $bot) {
