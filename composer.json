@@ -11,7 +11,8 @@
         "mpociot/slack-client": "^0.2.6",
         "clue/stdio-react": "^1.0",
         "mpociot/botman-tinker": "^0.1.1",
-        "jan-drda/laravel-google-custom-search-engine": "^1.0"
+        "jan-drda/laravel-google-custom-search-engine": "^1.0",
+        "imangazaliev/didom": "^1.10"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
