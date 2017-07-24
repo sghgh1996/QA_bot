@@ -28,16 +28,20 @@ class Google extends SearchEngine{
         curl_close($ch);
 
         file_put_contents('google.html',"\xEF\xBB\xBF". $output);
-//        echo $output;
+
         $doc = new Document();
         $doc->loadHtmlFile('google.html');
-        $number = $doc->find('div#resultStats');
-        $number = $number[0]->text();
-        $number = preg_replace("/\([^)]+\)/","",$number);
-        $number = preg_split("/[\s]+/", $number);
-        $number = $number[1];
-        $number = preg_replace('/[^\d.]/', '', $number);
-        $total_results = intval($number);
-        echo $total_results;
+//        $number = $doc->find('div#resultStats');
+//        $number = $number[0]->text();
+//        $number = preg_replace("/\([^)]+\)/","",$number);
+//        $number = preg_split("/[\s]+/", $number);
+//        $number = $number[1];
+//        $number = preg_replace('/[^\d.]/', '', $number);
+//        $total_results = intval($number);
+        $snippet = $doc->find('div.s div span span');
+        
+        $snippet = $snippet[0]->text();
+        echo $snippet;
+//        echo $total_results;
     }
 }
