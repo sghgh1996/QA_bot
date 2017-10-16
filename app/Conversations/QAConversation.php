@@ -24,7 +24,7 @@ class QAConversation extends Conversation{
      * Ask Question
      */
     private function askQuestion(){
-        $this->ask('خب! سوالتو بپرس تا جوابشو بهت بگم. البته قول نمیدم جوابم درست باشه', function (Answer $response) {
+        $this->ask('سوالتو بپرس. سعی میکنم جواب درست رو بگم.', function (Answer $response) {
             $this->question = $response->getText();
             $this->say('خوبه');
             $this->askNumberOfChoices();
@@ -42,9 +42,9 @@ class QAConversation extends Conversation{
                 Button::create('دو')->value('2'),
                 Button::create('سه')->value('3'),
                 Button::create('چهار')->value('4'),
-                Button::create('پنج')->value('5'), 
-                Button::create('شش')->value('6'),
-                Button::create('هفت')->value('7'),
+//                Button::create('پنج')->value('5'),
+//                Button::create('شش')->value('6'),
+//                Button::create('هفت')->value('7'),
                 Button::create('لغو')->value('cancel'),
             ]);
 
