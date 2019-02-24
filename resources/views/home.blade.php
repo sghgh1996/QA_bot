@@ -85,7 +85,7 @@
 
                 axios({
                     method: 'post',
-                    url: '/answer',
+                    url: 'api/answer',
                     data: answerRequest,
                     headers: {
                         'X-CSRF-TOKEN': csrf_token
