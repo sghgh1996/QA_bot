@@ -46,53 +46,44 @@
             <form class="form-horizontal">
                 {{ csrf_field() }}
                 <div class="form-group">
-                    <label for="question" class="col-xs-12 col-md-1 control-label">Question:</label>
-                    <div class="col-xs-12 col-md-11">
+                    <label for="question" class="col-xs-12 col-md-2 control-label">Question:</label>
+                    <div class="col-xs-12 col-md-10">
                         <input id="question" type="text" class="form-control" name="question" required autofocus>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="answer1" class="col-xs-12 col-md-1 control-label">Answer 1:</label>
-                    <div class="col-xs-12 col-md-5">
-                        <input id="answer1" type="text" class="form-control" name="answer1" required autofocus>
+                    <label for="choice1" class="col-xs-12 col-md-2 control-label">Choice 1:</label>
+                    <div class="col-xs-12 col-md-4">
+                        <input id="choice1" type="text" class="form-control" name="choice1" required autofocus>
                     </div>
-                    <label for="answer2" class="col-xs-12 col-md-1 control-label">Answer 2:</label>
-                    <div class="col-xs-12 col-md-5">
-                        <input id="answer2" type="text" class="form-control" name="answer2" required autofocus>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="answer3" class="col-xs-12 col-md-1 control-label">Answer 3:</label>
-                    <div class="col-xs-12 col-md-5">
-                        <input id="answer3" type="text" class="form-control" name="answer3" required autofocus>
-                    </div>
-                    <label for="answer4" class="col-xs-12 col-md-1 control-label">Answer 4:</label>
-                    <div class="col-xs-12 col-md-5">
-                        <input id="answer4" type="text" class="form-control" name="answer4" required autofocus>
+                    <label for="choice2" class="col-xs-12 col-md-2 control-label">Choice 2:</label>
+                    <div class="col-xs-12 col-md-4">
+                        <input id="choice2" type="text" class="form-control" name="choice2" required autofocus>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="col-xs-12 col-md-2 control-label">Your Choice</label>
-                    <div class="col-xs-12 col-md-10">
-                        <label class="radio-inline">
-                            <input type="radio" name="user-choice" checked>
-                            Answer 1
-                        </label>
-                        <label class="radio-inline">
-                            <input type="radio" name="user-choice">
-                            Answer 2
-                        </label>
-                        <label class="radio-inline">
-                            <input type="radio" name="user-choice">
-                            Answer 3
-                        </label>
-                        <label class="radio-inline">
-                            <input type="radio" name="user-choice">
-                            Answer 4
-                        </label>
+                    <label for="choice3" class="col-xs-12 col-md-2 control-label">Choice 3:</label>
+                    <div class="col-xs-12 col-md-4">
+                        <input id="choice3" type="text" class="form-control" name="choice3" required autofocus>
+                    </div>
+                    <label for="choice4" class="col-xs-12 col-md-2 control-label">Choice 4:</label>
+                    <div class="col-xs-12 col-md-4">
+                        <input id="choice4" type="text" class="form-control" name="choice4" required autofocus>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-xs-12 col-md-6 col-md-offset-1">
+                        <label class="control-label">Your Choice:</label>
+                        <select class="form-control" id="user_choice">
+                            <option value="none">No Choice</option>
+                            <option value="choice1">choice 1</option>
+                            <option value="choice2">choice 2</option>
+                            <option value="choice3">choice 3</option>
+                            <option value="choice4">choice 4</option>
+                        </select>
                     </div>
                 </div>
 
@@ -120,12 +111,13 @@
                 e.preventDefault();
                 let answerRequest = {
                     question: $('input[name="question"]').val(),
-                    answer1: $('input[name="answer1"]').val(),
-                    answer2: $('input[name="answer2"]').val(),
-                    answer3: $('input[name="answer3"]').val(),
-                    answer4: $('input[name="answer4"]').val()
+                    choice1: $('input[name="choice1"]').val(),
+                    choice2: $('input[name="choice2"]').val(),
+                    choice3: $('input[name="choice3"]').val(),
+                    choice4: $('input[name="choice4"]').val(),
+                    user_choice: $('select#user_choice').val()
                 };
-
+                const resultDiv = $('.result');
                 showLoading();
                 axios({
                     method: 'post',
@@ -136,7 +128,37 @@
                     }
                 }).then(function (response) {
                     hideLoading();
-                    $('.result').append('<div>' + response.data + '</div>');
+                    resultDiv.empty();
+                    resultDiv.append(
+                        '<div>' +
+                        '<h3>Estimated Answer:   ' +
+                        response.data.result.answer +
+                        '</h3>' +
+                        '</div>'
+                    );
+                    let choices = '';
+                    Object.keys(response.data.result.choices).forEach(function (key) {
+                        choices += '<tr>' +
+                            '<td>' + key +
+                            '</td>' +
+                            '<td>' +
+                            response.data.result.choices[key] +
+                            '</td>' +
+                            '</tr>';
+                    });
+                    resultDiv.append(
+                        '<div class="table-responsive col-xs-12 col-md-6">' +
+                        '<table class="table table-striped">' +
+                        '<thead>' +
+                        '<th>Answer</th>' +
+                        '<th>Rank</th>' +
+                        '</thead>' +
+                        '<tbody>' + choices +
+                        '</tbody>' +
+                        '</table>' +
+                        '</div>'
+                    );
+
                     console.log(response.data);
                 }).catch(function (error) {
                     console.log(error);

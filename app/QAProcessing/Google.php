@@ -14,6 +14,7 @@ class Google extends SearchEngine{
 
     /**
      * @param $query
+     * @return int
      */
     public function getResult($query){
         $search_url = 'https://www.google.com/search?hl=en&tbo=d&site=&source=hp&q='.$query;
@@ -42,6 +43,6 @@ class Google extends SearchEngine{
         
 //        $snippet = $snippet[0]->text();
 //        echo $snippet;
-        echo $total_results;
+        return $total_results;
     }
 }

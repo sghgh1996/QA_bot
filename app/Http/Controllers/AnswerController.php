@@ -11,24 +11,27 @@ class AnswerController extends Controller {
     }
 
     public function answer(Request $r) {
-        $payload = json_decode($r->getContent());
-        $question = $payload->question;
-        $choices = [
-            $payload->answer1,
-            $payload->answer2,
-            $payload->answer3,
-            $payload->answer4
-        ];
-        try{
+//        try {
+            $payload = json_decode($r->getContent());
+            $choices = [
+                $payload->choice1,
+                $payload->choice2,
+                $payload->choice3,
+                $payload->choice4
+            ];
             $process = new QAnswering();
-            $reply = $process->answerToQuestion($question, $choices);
+            $reply = $process->answerToQuestion($payload->question, $choices, $payload->user_choice);
             if($reply != null) {
-                return 'جواب سوال به احتمال زیاد  ' . '"' . $reply . '"' . '  است';
+                $result['success'] = true;
+                $result['result'] = $reply;
+                return $result;
             } else {
-                return 'متاسفم نمیتونم به این سوال پاسخ بدم.';
+                $result['success'] = false;
+                $result['result'] = 'متاسفم نمیتونم به این سوال پاسخ بدم.';
+                return $result;
             }
-        } catch (\Exception $e){
-            return 'مشکلی پیش آمده است.';
-        }
+//        } catch (\Exception $e) {
+//            return 'مشکلی پیش آمده است.';
+//        }
     }
 }
