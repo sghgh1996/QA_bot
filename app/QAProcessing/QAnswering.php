@@ -43,6 +43,7 @@ class QAnswering {
             if ($user_choice === 'choice'.$counter) {
                 $q->user_choice_id = $c->id;
             }
+            $counter++;
             if($total > $max) {
                 $max = $total;
                 $answer = $choice;
