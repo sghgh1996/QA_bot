@@ -128,40 +128,43 @@
                     }
                 }).then(function (response) {
                     hideLoading();
-                    resultDiv.empty();
-                    resultDiv.append(
-                        '<div>' +
-                        '<h3>Estimated Answer:   ' +
-                        response.data.result.answer +
-                        '</h3>' +
-                        '</div>'
-                    );
-                    let choices = '';
-                    Object.keys(response.data.result.choices).forEach(function (key) {
-                        choices += '<tr>' +
-                            '<td>' + key +
-                            '</td>' +
-                            '<td>' +
-                            response.data.result.choices[key] +
-                            '</td>' +
-                            '</tr>';
-                    });
-                    resultDiv.append(
-                        '<div class="table-responsive col-xs-12 col-md-6">' +
-                        '<table class="table table-striped">' +
-                        '<thead>' +
-                        '<th>Answer</th>' +
-                        '<th>Rank</th>' +
-                        '</thead>' +
-                        '<tbody>' + choices +
-                        '</tbody>' +
-                        '</table>' +
-                        '</div>'
-                    );
-
+                    if (response.data.result.success) {
+                        resultDiv.empty();
+                        resultDiv.append(
+                            '<div>' +
+                            '<h3>Estimated Answer:   ' +
+                            response.data.result.answer +
+                            '</h3>' +
+                            '</div>'
+                        );
+                        let choices = '';
+                        Object.keys(response.data.result.choices).forEach(function (key) {
+                            choices += '<tr>' +
+                                '<td>' + key +
+                                '</td>' +
+                                '<td>' +
+                                response.data.result.choices[key] +
+                                '</td>' +
+                                '</tr>';
+                        });
+                        resultDiv.append(
+                            '<div class="table-responsive col-xs-12 col-md-6">' +
+                            '<table class="table table-striped">' +
+                            '<thead>' +
+                            '<th>Answer</th>' +
+                            '<th>Rank</th>' +
+                            '</thead>' +
+                            '<tbody>' + choices +
+                            '</tbody>' +
+                            '</table>' +
+                            '</div>'
+                        );
+                    } else {
+                        alert('محدوده تعداد جستجو ها در هر روز به پایان رسید.')
+                    }
                     console.log(response.data);
                 }).catch(function (error) {
-                    console.log(error);
+                    alert('محدوده تعداد جستجو ها در هر روز به پایان رسید.')
                 });
             });
             function showLoading() {
