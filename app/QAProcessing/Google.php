@@ -17,6 +17,7 @@ class Google extends SearchEngine{
      * @return int
      */
     public function getResult($query){
+        $query = str_replace(" ", "+", $query);
         $search_url = 'https://www.google.com/search?hl=en&tbo=d&site=&source=hp&q='.$query;
 
         $userAgent = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:54.0) Gecko/20100101 Firefox/54.0";
