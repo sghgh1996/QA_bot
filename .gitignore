@@ -7,3 +7,4 @@ Homestead.json
 Homestead.yaml
 .env
 /public/log.txt
+/public/google.html
