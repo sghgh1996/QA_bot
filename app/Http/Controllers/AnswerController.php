@@ -11,7 +11,7 @@ class AnswerController extends Controller {
     }
 
     public function answer(Request $r) {
-//        try {
+        try {
             $payload = json_decode($r->getContent());
             $choices = [
                 $payload->choice1,
@@ -30,8 +30,8 @@ class AnswerController extends Controller {
                 $result['result'] = 'متاسفم نمیتونم به این سوال پاسخ بدم.';
                 return $result;
             }
-//        } catch (\Exception $e) {
-//            return 'مشکلی پیش آمده است.';
-//        }
+        } catch (\Exception $e) {
+            return $e;
+        }
     }
 }

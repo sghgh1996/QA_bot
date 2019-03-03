@@ -122,13 +122,10 @@
                 axios({
                     method: 'post',
                     url: 'api/answer',
-                    data: answerRequest,
-                    headers: {
-                        'X-CSRF-TOKEN': csrf_token
-                    }
+                    data: answerRequest
                 }).then(function (response) {
                     hideLoading();
-                    if (response.data.result.success) {
+                    if (response.data.success === true) {
                         resultDiv.empty();
                         resultDiv.append(
                             '<div>' +
@@ -162,8 +159,7 @@
                     } else {
                         alert('محدوده تعداد جستجو ها در هر روز به پایان رسید.')
                     }
-                    console.log(response.data);
-                }).catch(function (error) {
+                }).catch(function () {
                     alert('محدوده تعداد جستجو ها در هر روز به پایان رسید.')
                 });
             });
