@@ -178,8 +178,11 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-//        google search api
-        'JanDrda\LaravelGoogleCustomSearchEngine\LaravelGoogleCustomSearchEngineProvider'
+        // google search api
+        'JanDrda\LaravelGoogleCustomSearchEngine\LaravelGoogleCustomSearchEngineProvider',
+
+        // Debugger
+        Barryvdh\Debugbar\ServiceProvider::class,
     ],
 
     /*
@@ -232,6 +235,9 @@ return [
 
 //        google search api
         'GoogleCseSearch' => 'JanDrda\LaravelGoogleCustomSearchEngine\Facades\LaravelGoogleCustomSearchEngineProvider',
+
+        // Debugger
+        'Debugbar' => Barryvdh\Debugbar\Facade::class,
     ],
 
 ];

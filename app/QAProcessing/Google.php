@@ -31,6 +31,9 @@ class Google extends SearchEngine{
 
         file_put_contents('google.html',"\xEF\xBB\xBF". $output);
 
+        if (strpos($output, 'No results found for') !== false) {
+            return 0;
+        }
         $doc = new Document();
         $doc->loadHtmlFile('google.html');
         $number = $doc->find('div#resultStats');
@@ -41,7 +44,6 @@ class Google extends SearchEngine{
         $number = preg_replace('/[^\d.]/', '', $number);
         $total_results = intval($number);
 //        $snippet = $doc->find('div.s div span span');
-        
 //        $snippet = $snippet[0]->text();
 //        echo $snippet;
         return $total_results;

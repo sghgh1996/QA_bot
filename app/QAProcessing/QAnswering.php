@@ -25,13 +25,13 @@ class QAnswering {
         $counter = 1;
         $resultChoices = array();
         foreach ($choices as $choice) {
-            $query = $choice. ' ' .$question;
-            $engine = new LaravelGoogleCustomSearchEngine();
-            $engine->getResults($query);
-            $total = $engine->getRawResult()->searchInformation->totalResults;
-//            $google = new Google();
-//            $total = $google->getResult($query);
-//            sleep(rand(1.5, 3));
+            $query = $question. ' ' .$choice;
+            // $engine = new LaravelGoogleCustomSearchEngine();
+            // $engine->getResults($query);
+            // $total = $engine->getRawResult()->searchInformation->totalResults;
+            $google = new Google();
+            $total = $google->getResult($query);
+            sleep(rand(1.5, 3));
             $c = new Choice();
             $c->text = $choice;
             $c->rank_count = $total;

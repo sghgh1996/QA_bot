@@ -22,8 +22,8 @@ class CreateChoicesTable extends Migration
                 ->on('questions')
                 ->onDelete('cascade');
             $table->text('text');
-            $table->integer('rank_count');
-            $table->integer('rank_snippet');
+            $table->integer('rank_count')->nullable();
+            $table->integer('rank_snippet')->nullable();
 
             $table->timestamps();
         });

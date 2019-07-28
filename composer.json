@@ -12,7 +12,8 @@
         "clue/stdio-react": "^1.0",
         "mpociot/botman-tinker": "^0.1.1",
         "jan-drda/laravel-google-custom-search-engine": "^1.0",
-        "imangazaliev/didom": "^1.10"
+        "imangazaliev/didom": "^1.10",
+        "barryvdh/laravel-debugbar": "~2.4"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
