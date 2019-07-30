@@ -6,6 +6,7 @@ use App\Console\Commands\BotManListen;
 use App\Console\Commands\BotManTinker;
 use App\Console\Commands\FacebookAddStartButtonPayload;
 use App\Console\commands\TestQA;
+use App\Console\commands\RunQA;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -19,7 +20,8 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         BotManListen::class,
         FacebookAddStartButtonPayload::class,
-        TestQA::class
+        TestQA::class,
+        RunQA::class
     ];
 
     /**

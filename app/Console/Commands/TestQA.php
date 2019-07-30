@@ -4,9 +4,6 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
-use App\Choice;
-use App\Question;
-use App\QAProcessing\Google;
 
 class TestQA extends Command
 {
@@ -15,14 +12,14 @@ class TestQA extends Command
      *
      * @var string
      */
-    protected $signature = 'qa:run';
+    protected $signature = 'qa:test';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'This is for testing qa bot with questions';
+    protected $description = 'Testing qa bot results';
 
     /**
      * Create a new command instance.
@@ -41,38 +38,23 @@ class TestQA extends Command
      */
     public function handle()
     {
-        $offset = 51;
-        $counter = 0;
-        $questions = DB::table('questions')
-        ->where('id', '>=', 33 + $offset)
-        ->get();
-        $this->info('Starting...');
-        foreach ($questions as $question) {
-            $choices = DB::table('choices')
-            ->where('question_id', $question->id)
-            ->get();
-            
-            $this->info('Answering Question ' . ($counter + $offset));
+        $questions = DB::table('questions')->get();
 
-            $max = 0;
-            $answer_id = -1;
-            foreach ($choices as $choice) {
-                $query = $question->text. ' ' .$choice->text;
-                $google = new Google();
-                $total = $google->getResult($query);
-                sleep(rand(2, 5));
-                if($total > $max) {
-                    $max = $total;
-                    $answer_id = $choice->id;
-                }
-                DB::table('choices')
-                ->where('id', $choice->id)
-                ->update(['rank_count' => $total]);
-            }
-            DB::table('questions')
-                ->where('id', $question->id)
-                ->update(['predicted_answer_id' => $answer_id]);
+        $this->info('Starting...');
+        $correct = 0;
+        $wrong = 0;
+        $counter = 0;
+        foreach ($questions as $question) {
+            $this->info('Testing Question ' . $counter);
             $counter++;
+            if ($question->predicted_answer_id === $question->answer_id) {
+                $correct++;
+            } else {
+                $wrong++;
+            }
         }
+        $this->info('Total: '.($correct + $wrong));
+        $this->info('Correct: '.$correct);
+        $this->info('Wrong: '.$wrong);
     }
 }
