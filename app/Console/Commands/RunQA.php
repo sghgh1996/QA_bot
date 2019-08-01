@@ -39,40 +39,50 @@ class RunQA extends Command
      */
     public function handle()
     {
-        $offset = 34;
-        $counter = 61;
-        $questions = DB::table('questions')
-        ->where('id', '>=', $counter + $offset)
-        ->get();
-        $this->info('Starting...');
-        foreach ($questions as $question) {
-            $choices = DB::table('choices')
-            ->where('question_id', $question->id)
-            ->get();
+        $algorithm = $this->choice('What is the algorithm?', ['count_normal', 'count_quote', 'snippet']);
+        $algorithmRow = DB::table('algorithms')->where('name', $algorithm)->first();
 
-            $this->info('Answering Question ' . $counter);
-            $this->info('text: '.$question->text);
-            $counter++;
+        // Counting algorithms
+        if ($algorithmRow) {
+            $question_offset = 1; // The starting id of question
+            $counter = $question_offset; // Showing in console
+            $questions = DB::table('questions')
+                ->where('id', '>=', $question_offset)
+                ->get();
+            $this->info('Starting...');
+            foreach ($questions as $question) {
+                $choices = DB::table('choices')
+                ->where('question_id', $question->id)
+                ->get();
 
-            $max = 0;
-            $answer_id = -1;
-            foreach ($choices as $choice) {
-                $query = $question->text. ' "' .$choice->text . '"';
-                $google = new Google();
-                $this->info('Choice ' . $choice->text);
-                $total = $google->getResult($query);
-                sleep(rand(6, 12));
-                if($total > $max) {
-                    $max = $total;
-                    $answer_id = $choice->id;
+                $this->info('Answering Question ' . $counter);
+                $this->info('text: '.$question->text);
+                $counter++;
+
+                $answer_id = -1;
+                foreach ($choices as $choice) {
+                    if ($algorithm === 'snippet') {
+                        // TODO: implement
+                    } else {
+                        if ($algorithm === 'count_normal') {
+                            $query = $question->text. ' ' .$choice->text;
+                        } else {
+                            $query = $question->text. ' "' .$choice->text . '"';
+                        }
+                        $google = new Google();
+                        $this->info('Choice ' . $choice->text);
+                        $total = $google->getResult($query);
+                        DB::table('ranks')->insert([
+                            'choice_id' => $choice->id,
+                            'algorithm_id' => $algorithmRow->id,
+                            'value' => $total
+                        ]);
+                        sleep(rand(6, 12));
+                    }
                 }
-                DB::table('choices')
-                ->where('id', $choice->id)
-                ->update(['rank_count' => $total]);
             }
-            DB::table('questions')
-                ->where('id', $question->id)
-                ->update(['predicted_answer_id' => $answer_id]);
+        } else {
+            $this->error('No Such Algorithm Found D:');
         }
     }
 }
