@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use App\QAProcessing\Google;
+use JanDrda\LaravelGoogleCustomSearchEngine\LaravelGoogleCustomSearchEngine;
 
 class RunQA extends Command
 {
@@ -59,11 +60,26 @@ class RunQA extends Command
                 $this->info('text: '.$question->text);
                 $counter++;
 
-                $answer_id = -1;
-                foreach ($choices as $choice) {
-                    if ($algorithm === 'snippet') {
-                        // TODO: implement
-                    } else {
+                if ($algorithm === 'snippet') {
+                    $engine = new LaravelGoogleCustomSearchEngine();
+                    $items = $engine->getResults($question->text);
+                    $items = json_decode(json_encode($items, JSON_UNESCAPED_UNICODE));
+                    foreach ($choices as $choice) {
+                        $choice_rank = 0;
+                        foreach ($items as $item) {
+                            if (strpos($item->snippet, $choice->text) !== false) {
+                                $choice_rank++;
+                            }
+                        }
+                        DB::table('ranks')->insert([
+                            'choice_id' => $choice->id,
+                            'algorithm_id' => $algorithmRow->id,
+                            'value' => $choice_rank
+                        ]);
+                    }
+                    sleep(rand(1, 2));
+                } else {
+                    foreach ($choices as $choice) {
                         if ($algorithm === 'count_normal') {
                             $query = $question->text. ' ' .$choice->text;
                         } else {
