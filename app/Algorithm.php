@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Choice extends Model
+class Algorithm extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -12,6 +12,6 @@ class Choice extends Model
      * @var array
      */
     protected $fillable = [
-        'text', 'is_answer', 'question_id',
+        'name',
     ];
 }

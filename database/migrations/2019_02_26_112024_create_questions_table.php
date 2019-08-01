@@ -17,8 +17,7 @@ class CreateQuestionsTable extends Migration
             $table->increments('id');
 
             $table->text('text');
-            $table->integer('user_choice_id')->default(-1);
-            $table->integer('answer_id')->default(-1);
+            $table->integer('difficulty')->default(10);
 
             $table->timestamps();
         });

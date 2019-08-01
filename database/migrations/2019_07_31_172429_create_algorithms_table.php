@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddPredictedAnswerIdToQuestionsTable extends Migration
+class CreateAlgorithmsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,12 @@ class AddPredictedAnswerIdToQuestionsTable extends Migration
      */
     public function up()
     {
-        Schema::table('questions', function (Blueprint $table) {
-            $table->integer('predicted_answer_id')->default(-1);
+        Schema::create('algorithms', function (Blueprint $table) {
+            $table->increments('id');
+
+            $table->string('name');
+
+            $table->timestamps();
         });
     }
 
@@ -25,8 +29,6 @@ class AddPredictedAnswerIdToQuestionsTable extends Migration
      */
     public function down()
     {
-        Schema::table('questions', function (Blueprint $table) {
-            $table->dropColumn(['predicted_answer_id']);
-        });
+        Schema::dropIfExists('algorithms');
     }
 }
