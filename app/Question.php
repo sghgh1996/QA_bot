@@ -12,6 +12,6 @@ class Question extends Model
      * @var array
      */
     protected $fillable = [
-        'text', 'difficulty',
+        'text', 'difficulty', 'is_test',
     ];
 }
