@@ -31,7 +31,7 @@
             <div class="sidebar-wrapper">
                 <ul class="nav">
                     <li class="nav-item active">
-                        <a class="nav-link" href="#0">
+                        <a class="nav-link" href="{{ url('dashboard') }}">
                         <i class="material-icons">dashboard</i>
                         <p>نتایج</p>
                         </a>
@@ -44,7 +44,7 @@
             <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
                 <div class="container-fluid">
                     <div class="navbar-wrapper">
-                        <a class="navbar-brand" href="#">داشبورد</a>
+                    <a class="navbar-brand" href="{{ url('dashboard') }}">داشبورد</a>
                     </div>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="sr-only">Toggle navigation</span>
