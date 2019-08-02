@@ -1,0 +1,21 @@
+/* Quicksand font for hotel english texts */
+@font-face {
+    font-family: 'quicksand';
+    src: url('Quicksand-Regular.ttf') format('truetype');
+    font-weight: normal;
+}
+@font-face {
+    font-family: 'quicksand';
+    src: url('Quicksand-Bold.ttf') format('truetype');
+    font-weight: bold;
+}
+@font-face {
+    font-family: 'quicksand';
+    src: url('Quicksand-Light.ttf') format('truetype');
+    font-weight: 300;
+}
+@font-face {
+    font-family: 'quicksand';
+    src: url('Quicksand-Medium.ttf') format('truetype');
+    font-weight: 500;
+}

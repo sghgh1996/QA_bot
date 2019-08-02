@@ -17,4 +17,6 @@ Route::get('/google/{query}', '\App\QAProcessing\Google@getResult');
 
 Route::get('/', 'AnswerController@getBotInterfaceHome');
 
+Route::get('/dashboard', 'DashboardController@getDashboard');
+
 Route::post('api/answer', 'AnswerController@answer');
