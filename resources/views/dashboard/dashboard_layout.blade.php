@@ -13,6 +13,8 @@
     <!-- Material Kit CSS -->
     <link href="{{ URL::asset('material-dashboard-assets/css/material-dashboard-rtl.css') }}" rel="stylesheet" />
     <link href="{{ URL::asset('material-dashboard-assets/css/material-dashboard.css') }}" rel="stylesheet" />
+
+    @yield('style')
 </head>
 
 <body>
@@ -108,11 +110,12 @@
         </div>
     </div>
     <!--   Core JS Files   -->
-    <script src="{{ URL::asset('material-dashboard-assets/js/core/jquery.min.js') }}"></script>
-    <script src="{{ URL::asset('material-dashboard-assets/js/core/popper.min.js') }}"></script>
-    <script src="{{ URL::asset('material-dashboard-assets/js/core/bootstrap-material-design.min.js') }}"></script>
-    <script src="{{ URL::asset('material-dashboard-assets/js/plugins/perfect-scrollbar.jquery.min.js') }}"></script>
+    <script src="{{ URL::asset('material-dashboard-assets/js/core/jquery.min.js') }}" type="text/javascript"></script>
+    <script src="{{ URL::asset('material-dashboard-assets/js/core/popper.min.js') }}" type="text/javascript"></script>
+    <script src="{{ URL::asset('material-dashboard-assets/js/core/bootstrap-material-design.min.js') }}" type="text/javascript"></script>
+    <script src="{{ URL::asset('material-dashboard-assets/js/plugins/perfect-scrollbar.jquery.min.js') }}" type="text/javascript"></script>
     <script src="{{ URL::asset('material-dashboard-assets/js/material-dashboard.js') }}" type="text/javascript"></script>
+    @stack('scripts')
 </body>
 
 </html>

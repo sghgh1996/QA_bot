@@ -5,7 +5,7 @@
         <h4>لیست سوالات</h4>
     </div>
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-xs-12">
             <div class="card">
                 <div class="card-header card-header-info">
                     <h4 class="card-title ">لیست سوالات</h4>
@@ -27,7 +27,7 @@
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
                                         <td style="width: 52%">
-                                            <a href="{{ url('dashboard/search/questions/'.$question->id) }}">
+                                            <a href="{{ url('dashboard/search/questions/question/'.$question->id) }}">
                                                 {{ $question->text .' ؟' }}
                                             </a>
                                         </td>

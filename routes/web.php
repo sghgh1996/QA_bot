@@ -14,12 +14,13 @@
 Route::match(['get', 'post'], '/botman', 'BotManController@handle');
 
 Route::get('/google/{query}', '\App\QAProcessing\Google@getResult');
-
-Route::get('/', 'AnswerController@getBotInterfaceHome');
-
-Route::get('/dashboard', 'DashboardController@getDashboard');
-
 Route::post('api/answer', 'AnswerController@answer');
+
+// Route::get('/', 'AnswerController@getBotInterfaceHome');
+
+Route::get('/', function () {
+    return redirect('dashboard');
+});
 
 Route::group(['prefix' => 'dashboard'], function () {
     Route::get('/', function () {
@@ -27,6 +28,9 @@ Route::group(['prefix' => 'dashboard'], function () {
     });
     Route::get('/results', 'DashboardController@getDashboard');
     Route::group(['prefix' => 'search'], function () {
-        Route::get('/questions', 'DashboardController@getTestQuestions');
+        Route::group(['prefix' => 'questions'], function () {
+            Route::get('/', 'DashboardController@getTestQuestions');
+            Route::get('/question/{id}', 'DashboardController@analyzeQuestion');
+        });
     });
 });
