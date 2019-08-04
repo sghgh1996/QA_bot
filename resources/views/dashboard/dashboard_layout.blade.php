@@ -25,7 +25,7 @@
             data-background-color="white"
         >
             <div class="logo">
-                <a href="#" class="simple-text logo-normal">
+                <a href="{{ url('/') }}" class="simple-text logo-normal">
                     سیستم پرسش و پاسخ<br/>
                     سوالات فارسی
                 </a>
@@ -84,9 +84,6 @@
             <!-- Navbar -->
             <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top">
                 <div class="container-fluid">
-                    <div class="navbar-wrapper">
-                        <a class="navbar-brand" href="{{ url('dashboard') }}">داشبورد</a>
-                    </div>
                     <button
                         class="navbar-toggler"
                         type="button"

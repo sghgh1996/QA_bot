@@ -8,7 +8,48 @@ use Illuminate\Support\Facades\DB;
 class DashboardController extends Controller
 {
     public function getDashboard() {
-        return view('dashboard.dashboard');
+        $questions = DB::table('questions')->where('is_test', 1)->get();
+        $algorithms = DB::table('algorithms')->get();
+
+        $questions_count = $questions->count();
+        $algorithms_count = $algorithms->count();
+
+        $accuracy_total = 0;
+        $max_acc = 0;
+        foreach($algorithms as $algorithm) {
+            $correct = 0;
+            foreach($questions as $question) {
+                $choices = DB::table('choices')
+                    ->join('ranks', 'choices.id', '=', 'ranks.choice_id')
+                    ->where('question_id', $question->id)
+                    ->where('algorithm_id',$algorithm->id)
+                    ->get();
+
+                $max_rank = $choices->max('value');
+                if ($max_rank !== 0) {
+                    $choice = $choices->where('value', $max_rank)->first();
+                    if($choice->is_answer) $correct++;
+                }
+            }
+            $acc = $correct / $questions_count;
+            if ($acc > $max_acc) {
+                $max_acc = $acc;
+                $best = $algorithm->name;
+            }
+            $accuracy_total += $acc;
+        }
+
+        return view('dashboard.dashboard', [
+            'questions_count' => $questions_count,
+            'algorithms_count' => $algorithms_count,
+            'average_accuracy' => round($accuracy_total/$algorithms_count, 2) * 100,
+            'max_accuracy' => round($max_acc, 2) * 100,
+            'best_algorithm' => $best
+        ]);
+    }
+
+    public function run () {
+        return view('dashboard.run');
     }
 
     public function getTestQuestions () {
@@ -60,7 +101,7 @@ class DashboardController extends Controller
     }
     public function analyzeAlgorithms() {
         $algorithms = DB::table('algorithms')->get();
-        $questions = DB::table('questions')->get();
+        $questions = DB::table('questions')->where('is_test', 1)->get();
         
         $total = $questions->count();
         

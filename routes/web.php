@@ -33,5 +33,6 @@ Route::group(['prefix' => 'dashboard'], function () {
             Route::get('/question/{id}', 'DashboardController@analyzeQuestion');
         });
         Route::get('/algorithms', 'DashboardController@analyzeAlgorithms');
+        Route::get('/run', 'DashboardController@run');
     });
 });
