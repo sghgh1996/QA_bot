@@ -164,7 +164,7 @@ sup {
 }
 
 a {
-  color: #9c27b0;
+  color: #2196f3;
   text-decoration: none;
   background-color: transparent;
   -webkit-text-decoration-skip: objects;
@@ -567,7 +567,7 @@ sup {
 }
 
 a {
-  color: #9c27b0;
+  color: #2196f3;
   text-decoration: none;
   background-color: transparent;
   -webkit-text-decoration-skip: objects;
@@ -13754,10 +13754,6 @@ h2.title {
   color: #ff9800 !important;
 }
 
-.text-primary {
-  color: #9c27b0 !important;
-}
-
 .text-danger {
   color: #f44336 !important;
 }
@@ -14552,7 +14548,7 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
 .sidebar .sidebar-wrapper>.nav [data-toggle="collapse"]~div>ul>li>a i,
 .sidebar .sidebar-wrapper .user .user-info [data-toggle="collapse"]~div>ul>li>a i {
   font-size: 17px;
-  line-height: 20px;
+  line-height: 30px;
   width: 26px;
 }
 
@@ -14579,7 +14575,7 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
 .sidebar .nav .caret {
   margin-top: 13px;
   position: absolute;
-  right: 6px;
+  left: 6px;
 }
 
 .sidebar .nav li>a:hover,
@@ -16302,10 +16298,6 @@ legend {
 
 *:focus {
   outline: 0;
-}
-
-a {
-  color: #9c27b0;
 }
 
 a:hover,

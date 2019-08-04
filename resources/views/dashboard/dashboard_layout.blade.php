@@ -31,22 +31,60 @@
             <div class="sidebar-wrapper">
                 <ul class="nav">
                     <li class="nav-item active">
-                        <a class="nav-link" href="{{ url('dashboard') }}">
-                        <i class="material-icons">dashboard</i>
-                        <p>نتایج</p>
+                        <a class="nav-link" href="{{ url('dashboard/results') }}">
+                            <i class="material-icons">dashboard</i>
+                            <p>نتایج کلی</p>
                         </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#searchBased" data-toggle="collapse" aria-expanded="false">
+                            <i class="material-icons">search</i>
+                            <p>
+                                موتور جستجو
+                                <b class="caret float-left"></b>
+                            </p>
+                        </a>
+                        <div class="collapse" id="searchBased">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ url('dashboard/search/questions') }}">
+                                        <i class="material-icons">help</i>
+                                        <p>سوالات تست</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ url('dashboard/search/algorithms') }}">
+                                        <i class="material-icons">spellcheck</i>
+                                        <p>الگوریتم‌ها</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ url('dashboard/search/run') }}">
+                                        <i class="material-icons">question_answering</i>
+                                        <p>تست سیستم</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </li>
                 </ul>
             </div>
         </div>
         <div class="main-panel">
             <!-- Navbar -->
-            <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
+            <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top">
                 <div class="container-fluid">
                     <div class="navbar-wrapper">
-                    <a class="navbar-brand" href="{{ url('dashboard') }}">داشبورد</a>
+                        <a class="navbar-brand" href="{{ url('dashboard') }}">داشبورد</a>
                     </div>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
+                    <button
+                        class="navbar-toggler"
+                        type="button"
+                        data-toggle="collapse"
+                        aria-controls="navigation-index"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation"
+                    >
                         <span class="sr-only">Toggle navigation</span>
                         <span class="navbar-toggler-icon icon-bar"></span>
                         <span class="navbar-toggler-icon icon-bar"></span>
@@ -69,6 +107,12 @@
             </footer>
         </div>
     </div>
+    <!--   Core JS Files   -->
+    <script src="{{ URL::asset('material-dashboard-assets/js/core/jquery.min.js') }}"></script>
+    <script src="{{ URL::asset('material-dashboard-assets/js/core/popper.min.js') }}"></script>
+    <script src="{{ URL::asset('material-dashboard-assets/js/core/bootstrap-material-design.min.js') }}"></script>
+    <script src="{{ URL::asset('material-dashboard-assets/js/plugins/perfect-scrollbar.jquery.min.js') }}"></script>
+    <script src="{{ URL::asset('material-dashboard-assets/js/material-dashboard.js') }}" type="text/javascript"></script>
 </body>
 
 </html>

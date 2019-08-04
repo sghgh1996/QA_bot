@@ -2,9 +2,9 @@
 
 @section('content')
     <div>
-        <h4>روش های مبتنی بر موتور جستجو</h4>
+        <h4>روش‌های مبتنی بر موتور جستجو</h4>
     </div>
-    <div class="row">
+    <div class="row p-3">
         <div class="col-md-4 col-sm-6 col-xs-12">
             <div class="card card-stats">
                 <div class="card-header card-header-warning card-header-icon">
@@ -56,5 +56,12 @@
                 </div>
             </div>
         </div>
+    </div>
+    <hr /> 
+    <div>
+        <h4>روش‌های مبتنی بر شبکه عصبی</h4>
+    </div>
+    <div>
+        ... به زودی
     </div>
 @endsection

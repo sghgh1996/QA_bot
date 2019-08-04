@@ -20,3 +20,13 @@ Route::get('/', 'AnswerController@getBotInterfaceHome');
 Route::get('/dashboard', 'DashboardController@getDashboard');
 
 Route::post('api/answer', 'AnswerController@answer');
+
+Route::group(['prefix' => 'dashboard'], function () {
+    Route::get('/', function () {
+        return redirect('dashboard/results');
+    });
+    Route::get('/results', 'DashboardController@getDashboard');
+    Route::group(['prefix' => 'search'], function () {
+        Route::get('/questions', 'DashboardController@getTestQuestions');
+    });
+});
