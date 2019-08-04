@@ -58,4 +58,30 @@ class DashboardController extends Controller
         // return json_encode($question);
         return view('dashboard.question', ['question' => $question]);
     }
+    public function analyzeAlgorithms() {
+        $algorithms = DB::table('algorithms')->get();
+        $questions = DB::table('questions')->get();
+        
+        $total = $questions->count();
+        
+        foreach($algorithms as $algorithm) {
+            $correct = 0;
+            foreach($questions as $question) {
+                $choices = DB::table('choices')
+                    ->join('ranks', 'choices.id', '=', 'ranks.choice_id')
+                    ->where('question_id', $question->id)
+                    ->where('algorithm_id',$algorithm->id)
+                    ->get();
+
+                $max_rank = $choices->max('value');
+                if ($max_rank !== 0) {
+                    $choice = $choices->where('value', $max_rank)->first();
+                    if($choice->is_answer) $correct++;
+                }
+            }
+            $algorithm->accuracy = $correct / $total;
+        }
+
+        return view('dashboard.algorithms', ['algorithms' => $algorithms]);
+    }
 }

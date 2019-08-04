@@ -32,35 +32,43 @@
             </div>
             <div class="sidebar-wrapper">
                 <ul class="nav">
-                    <li class="nav-item active">
+                    <li class="nav-item {{ Menu::active('dashboard/results') }}">
                         <a class="nav-link" href="{{ url('dashboard/results') }}">
                             <i class="material-icons">dashboard</i>
                             <p>نتایج کلی</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#searchBased" data-toggle="collapse" aria-expanded="false">
+                        @php
+                            $expand = Menu::active('search/questions') == 'active' || Menu::active('search/algorithms') == 'active' || Menu::active('search/run') == 'active';
+                        @endphp
+                        <a 
+                            class="nav-link"
+                            href="#searchBased"
+                            data-toggle="collapse"
+                            aria-expanded="{{ $expand ? 'true' : 'false' }}"
+                        >
                             <i class="material-icons">search</i>
                             <p>
                                 موتور جستجو
                                 <b class="caret float-left"></b>
                             </p>
                         </a>
-                        <div class="collapse" id="searchBased">
+                        <div class="collapse {{ $expand ? 'show' : '' }}" id="searchBased">
                             <ul class="nav">
-                                <li class="nav-item">
+                                <li class="nav-item {{ Menu::active('search/questions') }}">
                                     <a class="nav-link" href="{{ url('dashboard/search/questions') }}">
                                         <i class="material-icons">help</i>
                                         <p>سوالات تست</p>
                                     </a>
                                 </li>
-                                <li class="nav-item">
+                                <li class="nav-item {{ Menu::active('search/algorithms') }}">
                                     <a class="nav-link" href="{{ url('dashboard/search/algorithms') }}">
                                         <i class="material-icons">spellcheck</i>
                                         <p>الگوریتم‌ها</p>
                                     </a>
                                 </li>
-                                <li class="nav-item">
+                                <li class="nav-item {{ Menu::active('search/run') }}">
                                     <a class="nav-link" href="{{ url('dashboard/search/run') }}">
                                         <i class="material-icons">question_answering</i>
                                         <p>تست سیستم</p>

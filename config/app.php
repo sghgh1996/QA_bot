@@ -238,6 +238,9 @@ return [
 
         // Debugger
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
+
+        // Mine
+        'Menu' => App\Helpers\Menu::class,
     ],
 
 ];
