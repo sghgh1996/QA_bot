@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Question;
+use App\Choice;
+use JanDrda\LaravelGoogleCustomSearchEngine\LaravelGoogleCustomSearchEngine;
+use App\QAProcessing\Google;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
@@ -62,6 +66,105 @@ class DashboardController extends Controller
     }
 
     public function analyzeQuestion ($id) {
+        $question = $this->analyzeQuestionFunction($id);
+        // return json_encode($question);
+        return view('dashboard.question', ['question' => $question]);
+    }
+
+    public function answerQuestion(Request $r) {
+        try {
+            $payload = json_decode($r->getContent());
+            $choicesText = [
+                $payload->choice1,
+                $payload->choice2,
+                $payload->choice3,
+                $payload->choice4
+            ];
+            $algorithms = $payload->algorithms;
+            $questionText = $payload->question;
+            
+            $question = new Question();
+            $question->text = $questionText;
+            $question->save();
+
+            $counter = 0;
+            foreach ($algorithms as $algorithmName => $status) {
+                if ($status) {
+                    $counter++;
+                    $algorithmRow = DB::table('algorithms')->where('name', $algorithmName)->first();
+                    // Creating new question
+                    if ($algorithmName === 'snippet') {
+                        $engine = new LaravelGoogleCustomSearchEngine();
+                        $items = $engine->getResults($questionText);
+                        $items = json_decode(json_encode($items, JSON_UNESCAPED_UNICODE));
+                        
+                        foreach ($choicesText as $choiceText) {
+                            $choice_rank = 0;
+                            foreach ($items as $item) {
+                                if (strpos($item->snippet, $choiceText) !== false) {
+                                    $choice_rank++;
+                                }
+                            }
+                            if ($counter === 1) {
+                                $choice = new Choice();
+                                $choice->text = $choiceText;
+                                $choice->question_id = $question->id;
+                                $choice->save();
+                            } else {
+                                $choice = DB::table('choices')
+                                    ->where('question_id', $question->id)
+                                    ->where('text', $choiceText)
+                                    ->get()
+                                    ->first();
+                            }
+
+                            DB::table('ranks')->insert([
+                                'choice_id' => $choice->id,
+                                'algorithm_id' => $algorithmRow->id,
+                                'value' => $choice_rank
+                            ]);
+                        }
+                    } else {
+                        foreach ($choicesText as $choiceText) {
+                            if ($algorithmName === 'count_normal') {
+                                $query = $questionText. ' ' .$choiceText;
+                            } else {
+                                $query = $questionText. ' "' .$choiceText . '"';
+                            }
+                            $google = new Google();
+                            $total = $google->getResult($query);
+                            
+                            if ($counter === 1) {
+                                $choice = new Choice();
+                                $choice->text = $choiceText;
+                                $choice->question_id = $question->id;
+                                $choice->save();
+                            } else {
+                                $choice = DB::table('choices')
+                                    ->where('question_id', $question->id)
+                                    ->where('text', $choiceText)
+                                    ->get()
+                                    ->first();
+                            }
+
+                            DB::table('ranks')->insert([
+                                'choice_id' => $choice->id,
+                                'algorithm_id' => $algorithmRow->id,
+                                'value' => $total
+                            ]);
+                            sleep(rand(1.5, 3.5));
+                        }
+                    }
+                }
+            }
+            // $result = $this->analyzeQuestionFunction($question->id);
+            return json_encode(['question_id' => $question->id]);
+        } catch (\Exception $e) {
+            return $e;
+        }
+    }
+
+    private function analyzeQuestionFunction ($id) {
         $question = DB::table('questions')->where('id', $id)->get()->first();
         $choices = DB::table('choices')
             ->where('question_id', $question->id)
@@ -71,34 +174,39 @@ class DashboardController extends Controller
         foreach ($choices as $choice) {
             array_push($choices_ids, $choice->id);
             if ($choice->is_answer) $question->answer_id = $choice->id;
+            else $question->answer_id = 0;
         }
         $algorithms = DB::table('algorithms')->get();
-        foreach ($algorithms as $algorithm) {
+        foreach ($algorithms as $key => $algorithm) {
             $algorithm_choices = DB::table('choices')
                 ->join('ranks', 'ranks.choice_id', '=', 'choices.id')
                 ->whereIn('choices.id', $choices_ids)
                 ->where('algorithm_id', $algorithm->id)
                 ->select('choices.text', 'choices.text', 'choices.is_answer', 'choices.id as choice_id', 'ranks.value')
                 ->get();
-            $max_rank = $algorithm_choices->max('value');
-            $sum_rank = $algorithm_choices->sum('value');
-            if ($max_rank === 0) {
-                $algorithm->predicted = 0;
-            } else {
-                $algorithm->predicted = 1;
-                $choice = $algorithm_choices->where('value', $max_rank)->first();
-                $algorithm->predicted_id = $choice->choice_id;
-                $algorithm->predicted_text = $choice->text;
-                foreach($algorithm_choices as $algorithm_choice) {
-                    $algorithm_choice->normalized_value = $algorithm_choice->value / $sum_rank;
+            if ($algorithm_choices->count() > 0) {
+                $max_rank = $algorithm_choices->max('value');
+                $sum_rank = $algorithm_choices->sum('value');
+                if ($max_rank === 0) {
+                    $algorithm->predicted = 0;
+                } else {
+                    $algorithm->predicted = 1;
+                    $choice = $algorithm_choices->where('value', $max_rank)->first();
+                    $algorithm->predicted_id = $choice->choice_id;
+                    $algorithm->predicted_text = $choice->text;
+                    foreach($algorithm_choices as $algorithm_choice) {
+                        $algorithm_choice->normalized_value = $algorithm_choice->value / $sum_rank;
+                    }
                 }
+                $algorithm->choices = $algorithm_choices;  
+            } else {
+                $algorithm->predicted = 0;
             }
-            $algorithm->choices = $algorithm_choices;    
         }
         $question->algorithms = $algorithms;
-        // return json_encode($question);
-        return view('dashboard.question', ['question' => $question]);
+        return $question;
     }
+
     public function analyzeAlgorithms() {
         $algorithms = DB::table('algorithms')->get();
         $questions = DB::table('questions')->where('is_test', 1)->get();

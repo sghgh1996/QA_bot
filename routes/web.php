@@ -14,7 +14,7 @@
 Route::match(['get', 'post'], '/botman', 'BotManController@handle');
 
 Route::get('/google/{query}', '\App\QAProcessing\Google@getResult');
-Route::post('api/answer', 'AnswerController@answer');
+Route::post('api/answer', 'DashboardController@answerQuestion');
 
 // Route::get('/', 'AnswerController@getBotInterfaceHome');
 
