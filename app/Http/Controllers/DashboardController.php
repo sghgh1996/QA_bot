@@ -28,11 +28,13 @@ class DashboardController extends Controller
                     ->where('question_id', $question->id)
                     ->where('algorithm_id',$algorithm->id)
                     ->get();
-
-                $max_rank = $choices->max('value');
-                if ($max_rank !== 0) {
-                    $choice = $choices->where('value', $max_rank)->first();
-                    if($choice->is_answer) $correct++;
+                
+                if ($choices->count() > 0) {
+                    $max_rank = $choices->max('value');
+                    if ($max_rank !== 0) {
+                        $choice = $choices->where('value', $max_rank)->first();
+                        if($choice->is_answer) $correct++;
+                    }
                 }
             }
             $acc = $correct / $questions_count;
@@ -170,11 +172,11 @@ class DashboardController extends Controller
             ->where('question_id', $question->id)
             ->get();
         $question->choices = $choices;
+        $question->answer_id = 0;
         $choices_ids = array();
         foreach ($choices as $choice) {
             array_push($choices_ids, $choice->id);
             if ($choice->is_answer) $question->answer_id = $choice->id;
-            else $question->answer_id = 0;
         }
         $algorithms = DB::table('algorithms')->get();
         foreach ($algorithms as $key => $algorithm) {
@@ -221,11 +223,12 @@ class DashboardController extends Controller
                     ->where('question_id', $question->id)
                     ->where('algorithm_id',$algorithm->id)
                     ->get();
-
-                $max_rank = $choices->max('value');
-                if ($max_rank !== 0) {
-                    $choice = $choices->where('value', $max_rank)->first();
-                    if($choice->is_answer) $correct++;
+                if ($choices->count() > 0) {
+                    $max_rank = $choices->max('value');
+                    if ($max_rank !== 0) {
+                        $choice = $choices->where('value', $max_rank)->first();
+                        if($choice->is_answer) $correct++;
+                    }
                 }
             }
             $algorithm->accuracy = $correct / $total;
